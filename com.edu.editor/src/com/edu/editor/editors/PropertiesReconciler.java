@@ -36,8 +36,8 @@ public class PropertiesReconciler extends PresentationReconciler {
 			}
 
 			@Override
-			public boolean isWordPart(final char arg0) {
-				return (arg0 >= '0' && arg0 <= 'Z') || arg0 == '{' || arg0 == '}' || arg0 == '_';
+			public boolean isWordPart(final char ch) {
+				return (ch >= '0' && ch <= 'Z') || ch == '{' || ch == '}' || ch == '_';
 			}
 		};
 		final IRule ruleVariable = new WordPatternRule(iWordDetector, "{{", "}}", keyword);

@@ -3,6 +3,11 @@ package com.edu.editor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
+/**
+ * Activator para o plugin.
+ *
+ * @author edusilva
+ */
 public class Activator extends AbstractUIPlugin {
 
 	public static final String PLUGIN_ID = "com.edu.editor";

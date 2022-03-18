@@ -19,6 +19,11 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.ContainerSelectionDialog;
 
+/**
+ * Page da wizard,
+ *
+ * @author edusilva
+ */
 public class NewMapeamentoWizardPage extends WizardPage {
 
 	private Text containerText;

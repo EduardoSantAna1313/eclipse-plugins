@@ -23,6 +23,12 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.IDE;
 
+/**
+ * Wizard para criar novo mapeamento.
+ *
+ * @author edusilva
+ *
+ */
 public class NewMapeamentoWizard extends Wizard implements INewWizard {
 
 	private NewMapeamentoWizardPage page;
@@ -91,14 +97,16 @@ public class NewMapeamentoWizard extends Wizard implements INewWizard {
 			}
 			stream.close();
 		} catch (final IOException e) {
+			// NA
 		}
+
 		monitor.worked(1);
 		monitor.setTaskName("Opening file for editing...");
 		getShell().getDisplay().asyncExec(() -> {
 
-			final var page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+			final var activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 			try {
-				IDE.openEditor(page, file, true);
+				IDE.openEditor(activePage, file, true);
 			} catch (final PartInitException e) {
 			}
 		});
@@ -107,8 +115,11 @@ public class NewMapeamentoWizard extends Wizard implements INewWizard {
 	}
 
 	private InputStream openContentStream() {
-		final var contents = "This is the initial file contents for *.tasks file that should be word-sorted in the Preview page of the multi-page editor";
-		return new ByteArrayInputStream(contents.getBytes());
+		final var contents = new StringBuilder();
+		contents.append(" Teste inicial\n");
+		contents.append(" {{IGNORE}}12345ABCDE\n");
+		contents.append("123456{{VALOR_IR}}(.+?)\n");
+		return new ByteArrayInputStream(contents.toString().getBytes());
 	}
 
 	private void throwCoreException(final String message) throws CoreException {
