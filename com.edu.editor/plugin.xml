@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+  <extension
+         point="org.eclipse.core.contenttype.contentTypes">
+      <content-type
+            file-extensions="tasks"
+            id="com.fh.tools.mapeamento.contenttype.mapeamento"
+            name="Tasks"
+            priority="high">
+      </content-type>
+   </extension>
+   
+   <extension
+         point="org.eclipse.ui.editors">
+      <editorContentTypeBinding
+            contentTypeId="com.fh.tools.mapeamento.contenttype.mapeamento"
+            editorId="org.eclipse.ui.genericeditor.GenericEditor">
+      </editorContentTypeBinding>
+   </extension>
+   <extension
+      point="org.eclipse.ui.genericeditor.presentationReconcilers">
+	    <presentationReconciler
+	         class="com.edu.editor.editors.PropertiesReconciler"
+	         contentType="com.fh.tools.mapeamento.contenttype.mapeamento">
+	   </presentationReconciler>
+	</extension>
+   
+   
+   <extension
+      point="org.eclipse.ui.genericeditor.contentAssistProcessors">
+	   <contentAssistProcessor
+	         class="com.edu.editor.editors.MapeamentoContentAssistProcessor"
+	         contentType="com.fh.tools.mapeamento.contenttype.mapeamento">
+	   </contentAssistProcessor>
+	</extension>
+   
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <category
+            name="Gerador de Mapeamento"
+            id="com.edu.editor">
+      </category>
+      <wizard
+            id="com.edu.editor.wizards.NewMapeamentoWizard"
+            name="Multi-page Editor file"
+            icon="icons/sample.png"
+            class="com.edu.editor.wizards.NewMapeamentoWizard"
+            category="com.edu.editor">
+      </wizard>
+   </extension>
+
+</plugin>
