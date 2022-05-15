@@ -14,9 +14,6 @@
             class="com.edu.postman.wizards.PostmanImportWizard"
             category="com.edu.postman"
             icon="icons/api-postman.png">
-         <description>
-            Import a file from the local file system into the workspace.
-         </description>
       </wizard>
    </extension>
    <extension
@@ -32,6 +29,29 @@
       <initializer
             class="com.edu.postman.preferences.PreferenceInitializer">
       </initializer>
+   </extension>
+   
+   <extension
+         point="org.eclipse.ui.popupMenus">
+      <objectContribution
+            id="com.edu.postman.menuGenerateExtensions"
+            objectClass="org.eclipse.core.resources.IFile" adaptable="true">
+
+		<menu id="com.edu.postman.exportmenu" 
+         	label="Postman"
+            icon="icons/api-postman.png" 
+         	path="additions">
+            <separator name="groupPostman"></separator>
+         </menu>
+
+			<action
+               class="com.edu.postman.wizards.PostmanExportAction"
+               id="com.edu.postman.wizards.PostmanExportAction"
+               label="Export Collection"
+           	   icon="icons/export_wiz.png"
+               menubarPath="com.edu.postman.exportmenu/groupPostman">
+			</action>
+		</objectContribution>
    </extension>
 
 </plugin>

@@ -1,6 +1,3 @@
-/**
- * Código para ImageService.java criado em 2022-05-13
- */
 package com.edu.postman.service.image;
 
 import java.net.URL;
@@ -10,8 +7,6 @@ import java.util.Map;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.ui.ISharedImages;
-import org.eclipse.ui.PlatformUI;
 import org.osgi.framework.FrameworkUtil;
 
 /**
@@ -19,6 +14,9 @@ import org.osgi.framework.FrameworkUtil;
  */
 public class ImageService {
 
+    /**
+     * Map<String,Image> - ImageService.java
+     */
     private static Map<String, Image> images = new HashMap<>();
 
     /**
@@ -53,10 +51,9 @@ public class ImageService {
      *
      * @return
      */
-    public static Image reloadIcon() {
+    public static Image getImage(final String name) {
 
-        return images.computeIfAbsent(ISharedImages.IMG_ELCL_SYNCED, a -> PlatformUI.getWorkbench().getSharedImages()
-                .getImageDescriptor(ISharedImages.IMG_ELCL_SYNCED).createImage());
+        return images.computeIfAbsent(name, a -> getImageDescriptor(name).createImage());
     }
 
 }

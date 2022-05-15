@@ -43,6 +43,8 @@ public class Messages extends NLS {
 
     public static String PostmanMessage_TheWorkspaceDoesNotHaveAnyCollections;
 
+    public static String PostmanMessage_SelectAWorkspace;
+
     static {
         NLS.initializeMessages(BUNDLE_NAME, Messages.class);
     }

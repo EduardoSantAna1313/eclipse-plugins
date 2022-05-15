@@ -3,9 +3,15 @@
  */
 package com.edu.postman.service.postman.collection;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 /**
  * Class to .
@@ -161,6 +167,26 @@ public class Collection {
         builder.append(isPublic);
         builder.append("\n]");
         return builder.toString();
+    }
+
+    /**
+     * @param contents
+     */
+    public static Collection fromJsom(final InputStream contents) {
+        final BufferedReader reader = new BufferedReader(new InputStreamReader(contents));
+
+        final String json = reader.lines().collect(Collectors.joining("\n"));
+
+        return fromJsom(json);
+
+    }
+
+    public static Collection fromJsom(final String json) {
+
+        final GsonBuilder b = new GsonBuilder().setLenient();
+
+        final Gson g = b.create();
+        return g.fromJson(json, Collection.class);
     }
 
 }

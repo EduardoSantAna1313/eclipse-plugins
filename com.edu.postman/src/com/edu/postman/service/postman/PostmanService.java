@@ -152,6 +152,14 @@ public class PostmanService {
 
     }
 
+    public Collection save(final String workspaceId, final String content) throws IOException {
+
+        final String json = PostmanConnection.post("collections?workspace=" + workspaceId, apiKey, content);
+
+        return gson.fromJson(json, ResponseCreate.class).getCollection();
+
+    }
+
     /**
      * Update a collection.
      *
@@ -170,6 +178,23 @@ public class PostmanService {
 
         return gson.fromJson(json, ResponseCreate.class).getCollection();
 
+    }
+
+    /**
+     * Update a collection.
+     *
+     * @param uid
+     * @param workspace
+     *
+     * @return
+     *
+     * @throws IOException
+     */
+    public String update(final String uid, final Workspace workspace) throws IOException {
+
+        final String content = gson.toJson(workspace);
+
+        return PostmanConnection.put("workspaces/" + uid, apiKey, content);
     }
 
     /**
