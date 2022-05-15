@@ -1,0 +1,1 @@
+Importa collections postman para o workspace.

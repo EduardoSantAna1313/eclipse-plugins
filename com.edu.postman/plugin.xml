@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+   <extension
+         point="org.eclipse.ui.importWizards">
+      <category
+            id="com.edu.postman"
+            name="Postman">
+      </category>
+      <wizard
+            id="com.edu.postman.wizards.PostmanImportWizard"
+            name="Postman Import"
+            class="com.edu.postman.wizards.PostmanImportWizard"
+            category="com.edu.postman"
+            icon="icons/api-postman.png">
+         <description>
+            Import a file from the local file system into the workspace.
+         </description>
+      </wizard>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="com.edu.postman.preferences.PostmanPreferencePage"
+            id="com.edu.postman.preferences.PostmanPreferencePage"
+            name="Postman Preference">
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="com.edu.postman.preferences.PreferenceInitializer">
+      </initializer>
+   </extension>
+
+</plugin>

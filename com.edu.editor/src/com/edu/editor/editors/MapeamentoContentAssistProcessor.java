@@ -15,84 +15,84 @@ import org.eclipse.jface.text.contentassist.IContextInformationValidator;
 /**
  * Conent assist para mapeamentos. Exibie propstas de código.
  *
- * @author edusilva
+ * @author Eduardo
  *
  */
 public class MapeamentoContentAssistProcessor implements IContentAssistProcessor {
 
-	private static final List<String> PROPOSALS = Arrays.asList("NOTA_NUMERO", "NOTA_DATA", "PRESTADOR_CPFCNPJ",
-			"TOMADOR_CPF_CNPJ", "DISCRIMINACAO", "VALOR_IR", "VALOR_INSS", "VALOR_LIQUIDO", "VALOR_SERVICO",
-			"VALOR_CSLL", "VALOR_COFINS", "VALOR_PIS", "IGNORE");
+    private static final List<String> PROPOSALS = Arrays.asList("NOTA_NUMERO", "NOTA_DATA", "PRESTADOR_CPFCNPJ",
+            "TOMADOR_CPF_CNPJ", "DISCRIMINACAO", "VALOR_IR", "VALOR_INSS", "VALOR_LIQUIDO", "VALOR_SERVICO",
+            "VALOR_CSLL", "VALOR_COFINS", "VALOR_PIS", "IGNORE");
 
-	@Override
-	public ICompletionProposal[] computeCompletionProposals(final ITextViewer viewer, final int offset) {
+    @Override
+    public ICompletionProposal[] computeCompletionProposals(final ITextViewer viewer, final int offset) {
 
-		final IDocument document = viewer.getDocument();
+        final IDocument document = viewer.getDocument();
 
-		try {
-			final int lineOfOffset = document.getLineOfOffset(offset);
-			final int lineOffset = document.getLineOffset(lineOfOffset);
+        try {
+            final int lineOfOffset = document.getLineOfOffset(offset);
+            final int lineOffset = document.getLineOffset(lineOfOffset);
 
-			final String[] lines = document.get().split("\n");
+            final String[] lines = document.get().split("\n");
 
-			if (lineOfOffset >= lines.length) {
-				return new ICompletionProposal[0];
-			}
+            if (lineOfOffset >= lines.length) {
+                return new ICompletionProposal[0];
+            }
 
-			final String line = lines[lineOfOffset];
-			final String sline = line.substring(0, offset - lineOffset);
+            final String line = lines[lineOfOffset];
+            final String sline = line.substring(0, offset - lineOffset);
 
-			if (sline.contains("{{")) {
-				final int i = sline.indexOf("{{");
+            if (sline.contains("{{")) {
+                final int i = sline.indexOf("{{");
 
-				if (sline.length() > i + 2) {
-					final String digitedText = sline.substring(i + 2).toUpperCase();
+                if (sline.length() > i + 2) {
+                    final String digitedText = sline.substring(i + 2).toUpperCase();
 
-					final int replacementLength = digitedText.length();
+                    final int replacementLength = digitedText.length();
 
-					return PROPOSALS.stream().filter(proposal -> proposal.startsWith(digitedText))
-							.map(proposal -> new CompletionProposal(proposal, offset - replacementLength,
-									replacementLength, proposal.length() + replacementLength))
-							.toArray(ICompletionProposal[]::new);
-				}
-				return PROPOSALS.stream()
-						.map(proposal -> new CompletionProposal(proposal, offset, 0, proposal.length()))
-						.toArray(ICompletionProposal[]::new);
-			}
+                    return PROPOSALS.stream().filter(proposal -> proposal.startsWith(digitedText))
+                            .map(proposal -> new CompletionProposal(proposal, offset - replacementLength,
+                                    replacementLength, proposal.length() + replacementLength))
+                            .toArray(ICompletionProposal[]::new);
+                }
+                return PROPOSALS.stream()
+                        .map(proposal -> new CompletionProposal(proposal, offset, 0, proposal.length()))
+                        .toArray(ICompletionProposal[]::new);
+            }
 
-			if (offset != lineOffset) {
-				return new ICompletionProposal[0];
-			}
-		} catch (final BadLocationException error) {
-			error.printStackTrace();
-		}
-		return PROPOSALS.stream().map(proposal -> new CompletionProposal(proposal, offset, 0, proposal.length()))
-				.toArray(ICompletionProposal[]::new);
-	}
+            if (offset != lineOffset) {
+                return new ICompletionProposal[0];
+            }
+        } catch (final BadLocationException error) {
+            error.printStackTrace();
+        }
+        return PROPOSALS.stream().map(proposal -> new CompletionProposal(proposal, offset, 0, proposal.length()))
+                .toArray(ICompletionProposal[]::new);
+    }
 
-	@Override
-	public IContextInformation[] computeContextInformation(final ITextViewer viewer, final int offset) {
-		return null;
-	}
+    @Override
+    public IContextInformation[] computeContextInformation(final ITextViewer viewer, final int offset) {
+        return null;
+    }
 
-	@Override
-	public char[] getCompletionProposalAutoActivationCharacters() {
-		return "{".toCharArray();
-	}
+    @Override
+    public char[] getCompletionProposalAutoActivationCharacters() {
+        return "{".toCharArray();
+    }
 
-	@Override
-	public char[] getContextInformationAutoActivationCharacters() {
-		return null;
-	}
+    @Override
+    public char[] getContextInformationAutoActivationCharacters() {
+        return null;
+    }
 
-	@Override
-	public String getErrorMessage() {
-		return null;
-	}
+    @Override
+    public String getErrorMessage() {
+        return null;
+    }
 
-	@Override
-	public IContextInformationValidator getContextInformationValidator() {
-		return null;
-	}
+    @Override
+    public IContextInformationValidator getContextInformationValidator() {
+        return null;
+    }
 
 }
