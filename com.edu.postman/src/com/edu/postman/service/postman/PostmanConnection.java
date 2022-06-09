@@ -1,13 +1,14 @@
 package com.edu.postman.service.postman;
 
-import java.io.BufferedReader;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 
 /**
  * Class to PostmanConnection.
@@ -84,15 +85,45 @@ class PostmanConnection {
 
     }
 
-    static String post(final String suffix, final String key, final String content) throws IOException {
+    public static String post(final String suffix, final String key, final String content) throws IOException {
         final HttpURLConnection conn = createConnection(suffix, key);
         conn.setRequestMethod(METHOD_POST);
         conn.setDoOutput(true);
         conn.setRequestProperty("Content-Type", "application/json");
 
-        try (final OutputStream outputStream = conn.getOutputStream();) {
-            outputStream.write(content.getBytes());
-            outputStream.flush();
+        try (final OutputStream outputStream = conn.getOutputStream();
+                BufferedInputStream buf = new BufferedInputStream(new ByteArrayInputStream(content.getBytes()));) {
+            int r = 0;
+            final byte[] b = new byte[102400];
+
+            while ((r = buf.read(b, 0, b.length)) != -1) {
+                outputStream.write(b, 0, r);
+            }
+
+        }
+
+        return readResponse(conn);
+    }
+
+    public static String post(final String suffix, final String key, final String content,
+            final PropertyChangeListener listener) throws IOException {
+        final HttpURLConnection conn = createConnection(suffix, key);
+        conn.setRequestMethod(METHOD_POST);
+        conn.setDoOutput(true);
+        conn.setRequestProperty("Content-Type", "application/json");
+
+        final byte[] bytes = content.getBytes();
+
+        try (final OutputStream outputStream = conn.getOutputStream();
+                BufferedInputStream buf = new BufferedInputStream(new ByteArrayInputStream(bytes));) {
+            int r = 0;
+            final byte[] b = new byte[102400];
+
+            while ((r = buf.read(b, 0, b.length)) != -1) {
+                outputStream.write(b, 0, r);
+                listener.propertyChange(new PropertyChangeEvent(key, "send bytes", bytes.length, r));
+            }
+
         }
 
         return readResponse(conn);
@@ -122,13 +153,14 @@ class PostmanConnection {
 
     private static String readResponse(final HttpURLConnection conn) throws IOException {
 
-        try (final BufferedReader buffer = new BufferedReader(
-                new InputStreamReader(conn.getInputStream(), StandardCharsets.UTF_8))) {
+        try (final BufferedInputStream buffer = new BufferedInputStream(conn.getInputStream())) {
             final StringBuilder response = new StringBuilder();
-            String responseLine = null;
 
-            while ((responseLine = buffer.readLine()) != null) {
-                response.append(responseLine.trim());
+            int r = 0;
+            final byte[] b = new byte[102400];
+
+            while ((r = buffer.read(b, 0, b.length)) != -1) {
+                response.append(new String(b, 0, r));
             }
 
             return response.toString();

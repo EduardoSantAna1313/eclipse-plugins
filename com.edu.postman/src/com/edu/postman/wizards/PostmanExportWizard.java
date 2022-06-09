@@ -1,5 +1,6 @@
 package com.edu.postman.wizards;
 
+import java.beans.PropertyChangeListener;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.stream.Collectors;
@@ -86,19 +87,18 @@ public class PostmanExportWizard extends Wizard implements IExportWizard {
 
             try (final BufferedReader reader = new BufferedReader(new InputStreamReader(selectedFile.getContents()))) {
 
-                final PostmanService service = new PostmanServiceBuilder(apiKey).build();
+                final SubMonitor submonitor = SubMonitor.convert(pProgressMonitor, 100);
 
-                final SubMonitor submonitor = SubMonitor.convert(pProgressMonitor, 5);
+                final PostmanService service = new PostmanServiceBuilder(apiKey).build();
 
                 final String json = reader.lines().collect(Collectors.joining("\n"));
 
                 submonitor.setTaskName("Exportando a collection para o workspace " + workspace.getName());
-                submonitor.split(1);
+                final PropertyChangeListener listener = new PostmanChangeListener(submonitor);
 
-                final Collection newCollection = service.save(workspace.getId(), json);
+                final Collection newCollection = service.save(workspace.getId(), json, listener);
                 newCollection.setName(newCollection.getName() + " " + System.currentTimeMillis());
 
-                submonitor.split(1);
                 submonitor.done();
 
             } catch (final Exception error) {

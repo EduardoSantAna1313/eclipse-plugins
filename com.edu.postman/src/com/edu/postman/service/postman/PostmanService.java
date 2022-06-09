@@ -1,5 +1,6 @@
 package com.edu.postman.service.postman;
 
+import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collections;
@@ -155,6 +156,15 @@ public class PostmanService {
     public Collection save(final String workspaceId, final String content) throws IOException {
 
         final String json = PostmanConnection.post("collections?workspace=" + workspaceId, apiKey, content);
+
+        return gson.fromJson(json, ResponseCreate.class).getCollection();
+
+    }
+
+    public Collection save(final String workspaceId, final String content, final PropertyChangeListener listener)
+            throws IOException {
+
+        final String json = PostmanConnection.post("collections?workspace=" + workspaceId, apiKey, content, listener);
 
         return gson.fromJson(json, ResponseCreate.class).getCollection();
 

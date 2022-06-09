@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Annotation
+Bundle-SymbolicName: com.edu.annotation;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: com.edu.annotation.Activator
+Bundle-Vendor: EDU
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.core.resources,
+ org.eclipse.ui.console
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Automatic-Module-Name: com.edu.annotation
+Bundle-ActivationPolicy: lazy
